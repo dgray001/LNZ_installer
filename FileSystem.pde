@@ -3,7 +3,7 @@ void mkFile(String path) {
   mkFile(path, false);
 }
 void mkFile(String path, boolean replace) {
-  mkFile(Paths.get(sketchPath(path)), replace);
+  mkFile(java.nio.file.Paths.get(sketchPath(path)), replace);
 }
 void mkFile(Path p, boolean replace) {
   if (!Files.exists(p)) {
@@ -25,7 +25,7 @@ void mkFile(Path p, boolean replace) {
 
 // move file
 void moveFile(String source_path, String target_path) {
-  moveFile(Paths.get(sketchPath(source_path)), Paths.get(sketchPath(target_path)));
+  moveFile(java.nio.file.Paths.get(sketchPath(source_path)), java.nio.file.Paths.get(sketchPath(target_path)));
 }
 void moveFile(Path source, Path target) {
   try {
@@ -37,7 +37,7 @@ void moveFile(Path source, Path target) {
 
 // copy file
 void copyFile(String source_path, String target_path) {
-  copyFile(Paths.get(sketchPath(source_path)), Paths.get(sketchPath(target_path)));
+  copyFile(java.nio.file.Paths.get(sketchPath(source_path)), java.nio.file.Paths.get(sketchPath(target_path)));
 }
 void copyFile(Path source, Path target) {
   try {
@@ -49,7 +49,7 @@ void copyFile(Path source, Path target) {
 
 // delete file
 void deleteFile(String path) {
-  deleteFile(Paths.get(sketchPath(path)));
+  deleteFile(java.nio.file.Paths.get(sketchPath(path)));
 }
 void deleteFile(Path p) {
   try {
@@ -61,7 +61,7 @@ void deleteFile(Path p) {
 
 // list all entries in directory
 ArrayList<Path> listEntries(String path) {
-  return listEntries(Paths.get(sketchPath(path)));
+  return listEntries(java.nio.file.Paths.get(sketchPath(path)));
 }
 ArrayList<Path> listEntries(Path p) {
   ArrayList<Path> entries = new ArrayList<Path>();
@@ -80,7 +80,7 @@ ArrayList<Path> listEntries(Path p) {
 
 // list all files in directory
 ArrayList<Path> listFiles(String path) {
-  return listFiles(Paths.get(sketchPath(path)));
+  return listFiles(java.nio.file.Paths.get(sketchPath(path)));
 }
 ArrayList<Path> listFiles(Path p) {
   ArrayList<Path> files = listEntries(p);
@@ -95,7 +95,7 @@ ArrayList<Path> listFiles(Path p) {
 
 // list all folder in directory
 ArrayList<Path> listFolders(String path) {
-  return listFolders(Paths.get(sketchPath(path)));
+  return listFolders(java.nio.file.Paths.get(sketchPath(path)));
 }
 ArrayList<Path> listFolders(Path p) {
   ArrayList<Path> folders = listEntries(p);
@@ -116,7 +116,7 @@ void mkdir(String path, boolean replace) {
   mkdir(path, replace, false);
 }
 void mkdir(String path, boolean replace, boolean replace_file) {
-  mkdir(Paths.get(sketchPath(path)), replace, replace_file);
+  mkdir(java.nio.file.Paths.get(sketchPath(path)), replace, replace_file);
 }
 void mkdir(Path p, boolean replace, boolean replace_file) {
   if (!Files.exists(p)) {
@@ -146,7 +146,7 @@ void mkdir(Path p, boolean replace, boolean replace_file) {
 
 // move folder
 void moveFolder(String source_path, String target_path) {
-  moveFolder(Paths.get(sketchPath(source_path)), Paths.get(sketchPath(target_path)));
+  moveFolder(java.nio.file.Paths.get(sketchPath(source_path)), java.nio.file.Paths.get(sketchPath(target_path)));
 }
 void moveFolder(Path source, Path target) {
   if (Files.isDirectory(source)) {
@@ -166,7 +166,7 @@ void moveFolder(Path source, Path target) {
 
 // copy folder
 void copyFolder(String source_path, String target_path) {
-  copyFolder(Paths.get(sketchPath(source_path)), Paths.get(sketchPath(target_path)));
+  copyFolder(java.nio.file.Paths.get(sketchPath(source_path)), java.nio.file.Paths.get(sketchPath(target_path)));
 }
 void copyFolder(Path source, Path target) {
   if (Files.isDirectory(source)) {
@@ -185,7 +185,7 @@ void copyFolder(Path source, Path target) {
 
 // recursively deletes folder
 void deleteFolder(String path) {
-  deleteFolder(Paths.get(sketchPath(path)));
+  deleteFolder(java.nio.file.Paths.get(sketchPath(path)));
 }
 void deleteFolder(Path p) {
   if (Files.isDirectory(p)) {
@@ -209,7 +209,7 @@ void deleteFolder(Path p) {
 
 // Entry exists
 boolean entryExists(String path) {
-  return entryExists(Paths.get(sketchPath(path)));
+  return entryExists(java.nio.file.Paths.get(sketchPath(path)));
 }
 boolean entryExists(Path p) {
   return Files.exists(p);
@@ -217,7 +217,7 @@ boolean entryExists(Path p) {
 
 // File exists
 boolean fileExists(String path) {
-  return fileExists(Paths.get(sketchPath(path)));
+  return fileExists(java.nio.file.Paths.get(sketchPath(path)));
 }
 boolean fileExists(Path p) {
   return (Files.exists(p) && !Files.isDirectory(p));
@@ -225,7 +225,7 @@ boolean fileExists(Path p) {
 
 // Folder exists
 boolean folderExists(String path) {
-  return folderExists(Paths.get(sketchPath(path)));
+  return folderExists(java.nio.file.Paths.get(sketchPath(path)));
 }
 boolean folderExists(Path p) {
   return (Files.exists(p) && Files.isDirectory(p));
