@@ -28,17 +28,48 @@ class InstallButton extends RectangleButton {
     if (!this.hovered) {
       return;
     }
-    chooseFolder();
     this.disabled = true;
+    chooseFolder();
   }
 }
 InstallButton button;
+class InstallThread extends Thread {
+  File selection;
+  InstallThread(File selection) {
+    super("InstallThread");
+    this.selection = selection;
+    this.setDaemon(true);
+  }
+  @Override
+  void run() {
+    if (this.selection == null) {
+      return;
+    }
+    try {
+      message = "downloading from github";
+      ZipUtils.unzip(new URL("https://github.com/dgray001/LNZ/archive/refs/heads/release_alpha_v0.7_windows.zip"), this.selection.toPath());
+      message = "managing files";
+      deleteFile(this.selection.toPath().toString() + "/LNZ-release_alpha_v0.7_windows/java/lib/modules");
+      message = "downloading from onedrive";
+      ZipUtils.download(new URL("https://dl.dropboxusercontent.com/s/8ycy6e0w0qqjdge/modules?dl=0"),
+        this.selection.toPath().toString() + "/LNZ-release_alpha_v0.7_windows/java/lib/modules");
+      message = "finished";
+    } catch (Exception e) {
+      message = e.toString();
+    }
+  }
+}
+InstallThread thread;
+String message = "";
 
 void setup() {
   fullScreen();
   surface.setSize(200, 200);
   surface.setLocation(int(0.5 * (displayWidth - 200)), int(0.5 * (displayHeight - 200)));
   button = new InstallButton();
+  message = Constants.credits;
+  mouseX = 0;
+  mouseY = 0;
 }
 
 void draw() {
@@ -46,19 +77,23 @@ void draw() {
   fill(100, 255, 100);
   textSize(34);
   textAlign(CENTER, TOP);
-  text("LNZ", 100, 10);
+  text("LNZ", map(min(mouseX, width), 0, width, 80, 120), map(min(mouseY, height), 0, height, 0, 20));
   button.update(0);
   fill(255);
   textSize(12);
   textAlign(CENTER, BOTTOM);
-  text(Constants.credits, 100, height - 10);
+  text(message, 100, height - 10);
 }
 
 void mouseMoved() {
-  button.mouseMove(mouseX, mouseY);
+  mouseMove(mouseX, mouseY);
 }
 void mouseDragged() {
-  button.mouseMove(mouseX, mouseY);
+  mouseMove(mouseX, mouseY);
+}
+
+void mouseMove(float mX, float mY) {
+  button.mouseMove(mX, mY);
 }
 
 void mousePressed() {
@@ -86,9 +121,7 @@ public static class ZipUtils {
                 }
             }
         } catch (Exception e) {
-          println(e.getStackTrace());
           println(e.toString());
-          println(e.getMessage());
         }
     }
 
@@ -104,19 +137,6 @@ public static class ZipUtils {
 }
 
 void download(File selection) {
-  if (selection == null) {
-    return;
-  }
-  try {
-    println("downloading from github");
-    ZipUtils.unzip(new URL("https://github.com/dgray001/LNZ/archive/refs/heads/release_alpha_v0.7_windows.zip"), selection.toPath());
-    println("managing files");
-    deleteFile(selection.toPath().toString() + "/LNZ-release_alpha_v0.7_windows/java/lib/modules");
-    println("downloading from onedrive");
-    ZipUtils.download(new URL("https://dl.dropboxusercontent.com/s/8ycy6e0w0qqjdge/modules?dl=0"),
-      selection.toPath().toString() + "/LNZ-release_alpha_v0.7_windows/java/lib/modules");
-    println("finished");
-  } catch (Exception e) {
-    println(e.getMessage());
-  }
+  thread = new InstallThread(selection);
+  thread.start();
 }
